@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HLE Physics · Super-Annotator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+  :root{
+    --bg:#0e1012; --panel:#16191c; --panel2:#1c2024; --line:#2a2f34;
+    --ink:#e8e3d8; --dim:#9aa0a6; --faint:#6b7178;
+    --amber:#e0a04a; --green:#7fb069; --red:#d56a5a; --blue:#6c9bd1;
+    --accent:#e0a04a;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:"Spectral",Georgia,serif; font-size:16px; line-height:1.55;
+    display:flex; flex-direction:column;
+  }
+  .mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+  /* ---- top bar ---- */
+  header{
+    display:flex; align-items:center; gap:14px; padding:10px 16px;
+    background:linear-gradient(180deg,#15191d,#101316); border-bottom:1px solid var(--line);
+    position:sticky; top:0; z-index:10; flex-wrap:wrap;
+  }
+  header .title{font-family:"JetBrains Mono",monospace; font-weight:700; letter-spacing:.5px;
+    font-size:13px; color:var(--accent); text-transform:uppercase}
+  header .title small{color:var(--faint); font-weight:400; text-transform:none; margin-left:6px}
+  .spacer{flex:1}
+  button,select,label.btn{
+    font-family:"JetBrains Mono",monospace; font-size:12px; color:var(--ink);
+    background:var(--panel2); border:1px solid var(--line); border-radius:6px;
+    padding:6px 11px; cursor:pointer; transition:.12s;
+  }
+  button:hover,label.btn:hover{border-color:var(--accent); color:#fff}
+  button:disabled{opacity:.4; cursor:default}
+  .pill{font-family:"JetBrains Mono",monospace; font-size:11px; padding:3px 8px; border-radius:20px;
+    border:1px solid var(--line); color:var(--dim)}
+  .progress{font-family:"JetBrains Mono",monospace; font-size:12px; color:var(--dim)}
+  .progress b{color:var(--green)}
+  /* ---- layout ---- */
+  main{flex:1; overflow-y:auto; display:flex; justify-content:center}
+  .wrap{width:100%; max-width:1080px; padding:22px 26px 120px}
+  .empty{display:flex; flex-direction:column; align-items:center; justify-content:center;
+    height:70vh; gap:18px; color:var(--dim); text-align:center}
+  .empty .big{font-family:"JetBrains Mono",monospace; color:var(--accent); font-size:15px}
+  .drop{border:1.5px dashed var(--line); border-radius:12px; padding:40px 60px; transition:.15s}
+  .drop.over{border-color:var(--accent); background:#14181c}
+  /* ---- meta row ---- */
+  .metarow{display:flex; align-items:center; gap:10px; margin-bottom:18px; flex-wrap:wrap;
+    font-family:"JetBrains Mono",monospace; font-size:12px}
+  .qid{color:var(--faint)}
+  .tier{padding:3px 9px; border-radius:5px; font-weight:700; font-size:11px}
+  .tier.T1_careful{background:#3a2418; color:var(--amber); border:1px solid #5a3a20}
+  .tier.T2_verify_correctness{background:#2a2218; color:var(--amber)}
+  .tier.T2_check_localization{background:#1e2420; color:var(--green)}
+  .tier.T0_relabel,.tier.T0_rerun_corrected_key{background:#34201e; color:var(--red); border:1px solid #5a302a}
+  .tier.T3_spotcheck{background:#1a1d20; color:var(--dim)}
+  .prio{color:var(--accent)}
+  /* ---- sections ---- */
+  section{background:var(--panel); border:1px solid var(--line); border-radius:10px;
+    margin-bottom:16px; overflow:hidden}
+  .shead{font-family:"JetBrains Mono",monospace; font-size:11px; text-transform:uppercase;
+    letter-spacing:1px; color:var(--faint); padding:10px 16px; border-bottom:1px solid var(--line);
+    display:flex; align-items:center; gap:10px; cursor:default; user-select:none}
+  .shead.collapsible{cursor:pointer}
+  .shead .tag{margin-left:auto; color:var(--dim)}
+  .sbody{padding:16px 18px}
+  .sbody.q{font-size:17px; line-height:1.6}
+  .answer{font-family:"JetBrains Mono",monospace; color:var(--green); font-size:15px;
+    background:var(--panel2); padding:10px 14px; border-radius:6px; white-space:pre-wrap}
+  .rationale{color:var(--dim); font-size:15px; line-height:1.6; white-space:pre-wrap}
+  .hidden{display:none}
+  /* ---- steps ---- */
+  .step{display:flex; gap:12px; padding:9px 12px; border-radius:7px; cursor:pointer;
+    border:1px solid transparent; transition:.1s; align-items:flex-start}
+  .step:hover{background:var(--panel2)}
+  .step .n{font-family:"JetBrains Mono",monospace; font-size:12px; color:var(--faint);
+    min-width:30px; padding-top:2px; text-align:right; flex-shrink:0}
+  .step .txt{flex:1; white-space:pre-wrap; word-break:break-word}
+  .step.err{background:#2a1815; border-color:var(--red)}
+  .step.err .n{color:var(--red); font-weight:700}
+  .step.afterr{opacity:.5}
+  .step.ai1 .n::after{content:" ◖R1"; color:var(--faint)}
+  .step.ai2 .n::after{content:" ◗R2"; color:var(--faint)}
+  /* ---- AI panel ---- */
+  .trail{display:grid; grid-template-columns:auto 1fr 1fr 1fr; gap:0; font-family:"JetBrains Mono",monospace;
+    font-size:12px; border:1px solid var(--line); border-radius:7px; overflow:hidden}
+  .trail div{padding:7px 11px; border-bottom:1px solid var(--line)}
+  .trail .h{background:var(--panel2); color:var(--faint); font-size:10px; text-transform:uppercase; letter-spacing:.5px}
+  .trail .rl{background:var(--panel2); color:var(--dim)}
+  .trail .v.changed{color:var(--amber)}
+  .crit{margin-top:12px; font-size:14px; line-height:1.55; color:var(--dim)}
+  .crit b{font-family:"JetBrains Mono",monospace; font-size:10px; color:var(--faint);
+    text-transform:uppercase; letter-spacing:.6px; display:block; margin-bottom:2px}
+  .crit .blk{margin-bottom:10px; padding-left:11px; border-left:2px solid var(--line)}
+  /* ---- decision bar ---- */
+  .deck{position:fixed; bottom:0; left:0; right:0; background:linear-gradient(180deg,#13171b,#0c0f12);
+    border-top:1px solid var(--line); padding:12px 22px; display:flex; align-items:center; gap:14px;
+    flex-wrap:wrap; z-index:20}
+  .deck .grp{display:flex; align-items:center; gap:7px}
+  .deck .lab{font-family:"JetBrains Mono",monospace; font-size:10px; text-transform:uppercase;
+    letter-spacing:.6px; color:var(--faint)}
+  .opt{font-family:"JetBrains Mono",monospace; font-size:12px; padding:7px 13px; border-radius:6px;
+    border:1px solid var(--line); background:var(--panel2); cursor:pointer; color:var(--dim)}
+  .opt.on.correct{background:#1e2c1a; border-color:var(--green); color:var(--green)}
+  .opt.on.incorrect{background:#2c1a18; border-color:var(--red); color:var(--red)}
+  .opt.on.kw{background:#2c2418; border-color:var(--amber); color:var(--amber)}
+  #esField{width:64px; text-align:center}
+  #notes{font-family:"Spectral",serif; font-size:14px; background:var(--panel2); border:1px solid var(--line);
+    color:var(--ink); border-radius:6px; padding:7px 10px; width:230px; resize:vertical; min-height:36px}
+  .save{background:var(--accent); color:#1a1206; border-color:var(--accent); font-weight:700}
+  .save:hover{filter:brightness(1.1); color:#1a1206}
+  .rev{font-family:"JetBrains Mono",monospace; font-size:11px; color:var(--green)}
+  kbd{font-family:"JetBrains Mono",monospace; font-size:10px; background:#0a0c0e; border:1px solid var(--line);
+    border-radius:3px; padding:1px 4px; color:var(--faint)}
+  .khint{font-family:"JetBrains Mono",monospace; font-size:10px; color:var(--faint); margin-left:auto}
+  .katex{font-size:1.02em}
+</style>
+</head>
+<body>
+<header>
+  <div class="title">HLE · Super-Annotator <small>local · physics CoT ground truth</small></div>
+  <label class="btn">Load queue<input id="file" type="file" accept=".jsonl,.json" hidden></label>
+  <select id="tierFilter" title="filter by tier"><option value="">all tiers</option></select>
+  <span class="spacer"></span>
+  <span class="progress" id="prog">— / —</span>
+  <button id="prev" title="previous [">‹</button>
+  <button id="next" title="next ]">›</button>
+  <button id="jumpUn" title="next unreviewed (u)">unreviewed →</button>
+  <button id="export" title="download decisions">Export JSONL</button>
+</header>
+
+<main>
+  <div class="wrap" id="wrap">
+    <div class="empty">
+      <div class="drop" id="drop">
+        <div class="big">Drop review_queue.jsonl here</div>
+        <div>or use “Load queue”. Everything stays in your browser (localStorage); nothing is uploaded.</div>
+      </div>
+      <div style="font-size:13px">Keys: <kbd>C</kbd> correct · <kbd>X</kbd> incorrect · <kbd>N</kbd> no-error · <kbd>W</kbd> key-wrong · <kbd>Enter</kbd> save+next · <kbd>[</kbd>/<kbd>]</kbd> nav · <kbd>U</kbd> next unreviewed · click a step to set error_step</div>
+    </div>
+  </div>
+</main>
+
+<div class="deck hidden" id="deck">
+  <div class="grp"><span class="lab">answer</span>
+    <span class="opt correct" id="optC">correct (c)</span>
+    <span class="opt incorrect" id="optX">incorrect (x)</span></div>
+  <div class="grp"><span class="lab">first error step</span>
+    <input class="mono" id="esField" placeholder="—">
+    <span class="opt" id="optN">none (n)</span></div>
+  <div class="grp"><span class="opt kw" id="optW">key wrong (w)</span></div>
+  <textarea id="notes" placeholder="notes (optional)"></textarea>
+  <span class="rev hidden" id="revFlag">✓ reviewed</span>
+  <button class="save" id="save">Save &amp; next ⏎</button>
+  <span class="khint">click step = set error · click again = clear</span>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+let DATA = [], idx = 0, decisions = {}, STOREKEY = 'hle_annot_default';
+
+function key(d){ return d.question_id + '__' + d.response_label; }
+
+function renderMath(el){
+  if(window.renderMathInElement){
+    try{ renderMathInElement(el,{delimiters:[
+      {left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false},
+      {left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}],
+      throwOnError:false}); }catch(e){}
+  }
+}
+
+// split model_response into {n, text} using the model's own step numbering
+function parseSteps(resp){
+  const lines = resp.split(/\r?\n/);
+  const re = /^\s*(?:step\s*)?\(?(\d{1,3})\)?[.):\]]\s+/i;
+  const steps = []; let cur = null;
+  for(const ln of lines){
+    const m = ln.match(re);
+    if(m){ if(cur) steps.push(cur); cur = {n:parseInt(m[1],10), text:ln.replace(re,'')}; }
+    else if(cur){ cur.text += '\n' + ln; }
+    else { cur = {n:null, text:ln}; }
+  }
+  if(cur) steps.push(cur);
+  const numbered = steps.filter(s=>s.n!==null).length;
+  if(numbered >= 2) return {mode:'numbered', steps:steps.filter(s=>s.text.trim()||s.n!==null)};
+  // fallback: paragraph blocks numbered positionally
+  const blocks = resp.split(/\n\s*\n/).filter(b=>b.trim());
+  return {mode:'fallback', steps:blocks.map((b,i)=>({n:i+1, text:b}))};
+}
+
+function v(x){ return (x===null||x===undefined||(typeof x==='number'&&isNaN(x))) ? '—' : x; }
+
+function render(){
+  if(!DATA.length) return;
+  const d = DATA[idx];
+  const dec = decisions[key(d)] || {};
+  const [ic1,ic2,ic3] = d.ic_R1R2R3 || [null,null,null];
+  const [es1,es2,es3] = d.es_R1R2R3 || [null,null,null];
+
+  const parsed = parseSteps(d.model_response || '');
+  const chosenErr = ('human_error_step' in dec) ? dec.human_error_step
+                    : (d.final_error_step ?? null);
+
+  const stepsHtml = parsed.steps.map(s=>{
+    const isErr = (s.n!==null && s.n===chosenErr);
+    const aiTag = (s.n===es1?' ai1':'') + (s.n===es2?' ai2':'');
+    const after = (chosenErr!==null && s.n!==null && s.n>chosenErr) ? ' afterr' : '';
+    return `<div class="step${isErr?' err':''}${after}${aiTag}" data-n="${s.n??''}">
+      <div class="n">${s.n??''}</div><div class="txt">${escapeHtml(s.text)}</div></div>`;
+  }).join('');
+
+  const ICt = x => x===1?'correct':x===0?'incorrect':'—';
+  const trail = `
+    <div class="trail">
+      <div class="h"></div><div class="h">R1 Claude</div><div class="h">R2 GPT</div><div class="h">R3 final</div>
+      <div class="rl">is_correct</div>
+      <div class="v ${ic1!==ic3?'changed':''}">${ICt(ic1)}</div>
+      <div class="v ${ic2!==ic3?'changed':''}">${ICt(ic2)}</div>
+      <div class="v">${ICt(ic3)}</div>
+      <div class="rl">error_step</div>
+      <div class="v ${es1!==es3?'changed':''}">${v(es1)}</div>
+      <div class="v ${es2!==es3?'changed':''}">${v(es2)}</div>
+      <div class="v">${v(es3)}</div>
+      <div class="rl">key dispute</div>
+      <div class="v" style="grid-column:span 3">${d.final_reference_dispute===1?'⚠ a reviewer flagged the reference key as wrong':'—'}</div>
+    </div>`;
+
+  const crit = `<div class="crit">
+    ${d.claude_notes?`<div class="blk"><b>R1 Claude notes</b>${escapeHtml(d.claude_notes)}</div>`:''}
+    ${d.gpt_critique?`<div class="blk"><b>R2 GPT critique</b>${escapeHtml(d.gpt_critique)}</div>`:''}
+    ${d.r3_resolution?`<div class="blk"><b>R3 resolution</b>${escapeHtml(d.r3_resolution)}</div>`:''}
+  </div>`;
+
+  $('#wrap').innerHTML = `
+    <div class="metarow">
+      <span class="tier ${d.tier||''}">${d.tier||'—'}</span>
+      <span class="prio">prio ${d.priority}</span>
+      <span class="qid">${d.question_id} · ${d.response_label}</span>
+      ${d.generator?`<span class="pill">${escapeHtml(d.generator)}</span>`:''}
+      ${d.verdict_source==='MISSING'?'<span class="pill" style="color:var(--red)">no AI verdict</span>':''}
+      ${d.excluded?'<span class="pill" style="color:var(--red)">excluded · check key</span>':''}
+    </div>
+    <section><div class="shead">Problem</div><div class="sbody q" id="qBody">${escapeHtml(d.question)}</div></section>
+    <section>
+      <div class="shead">Reference answer <span class="tag">${d.final_reference_dispute===1?'⚠ possibly wrong — verify':'judge if this key is right'}</span></div>
+      <div class="sbody"><div class="answer" id="aBody">${escapeHtml(d.correct_answer)}</div></div>
+    </section>
+    <section>
+      <div class="shead collapsible" data-target="ratBody">Reference rationale <span class="tag">click to toggle</span></div>
+      <div class="sbody hidden" id="ratWrap"><div class="rationale" id="ratBody">${escapeHtml(d.rationale||'(none)')}</div></div>
+    </section>
+    <section>
+      <div class="shead">Model solution <span class="tag">${parsed.mode==='fallback'?'⚠ no numbered steps detected — positional':'click a step to mark first error'}</span></div>
+      <div class="sbody" id="stepsBody">${stepsHtml}</div>
+    </section>
+    <section>
+      <div class="shead">AI trajectory · R1 → R2 → R3</div>
+      <div class="sbody">${trail}${crit}</div>
+    </section>`;
+
+  // math
+  ['qBody','aBody','ratBody','stepsBody'].forEach(id=>{const el=$('#'+id); if(el) renderMath(el);});
+
+  // step click handlers
+  $('#stepsBody').querySelectorAll('.step').forEach(st=>{
+    st.onclick = ()=>{
+      const n = st.dataset.n==='' ? null : parseInt(st.dataset.n,10);
+      if(n===null) return;
+      const cur = getEs();
+      setEs(cur===n ? null : n);
+      paintSteps();
+    };
+  });
+
+  $('#ratWrap') && ($('.collapsible').onclick = ()=> $('#ratWrap').classList.toggle('hidden'));
+
+  // decision bar prefill (human value if present, else AI final)
+  const ic = ('human_is_correct' in dec) ? dec.human_is_correct : d.final_is_correct;
+  setIC(ic);
+  $('#esField').value = (chosenErr===null||chosenErr===undefined)?'':chosenErr;
+  setKW(('human_key_wrong' in dec) ? dec.human_key_wrong : (d.final_reference_dispute===1));
+  $('#notes').value = dec.human_notes || '';
+  $('#revFlag').classList.toggle('hidden', !dec.reviewed);
+
+  updateProgress();
+  $('#deck').classList.remove('hidden');
+  $('#wrap').scrollIntoView({block:'start'});
+  document.querySelector('main').scrollTop = 0;
+}
+
+function paintSteps(){
+  const chosen = getEs();
+  $('#stepsBody').querySelectorAll('.step').forEach(st=>{
+    const n = st.dataset.n==='' ? null : parseInt(st.dataset.n,10);
+    st.classList.toggle('err', n!==null && n===chosen);
+    st.classList.toggle('afterr', chosen!==null && n!==null && n>chosen);
+  });
+}
+
+// decision-bar state helpers
+let _ic = null, _kw = false;
+function setIC(x){ _ic = (x===1||x===0)?x:null;
+  $('#optC').classList.toggle('on', _ic===1); $('#optC').classList.toggle('correct', _ic===1);
+  $('#optX').classList.toggle('on', _ic===0); $('#optX').classList.toggle('incorrect', _ic===0); }
+function setKW(b){ _kw=!!b; $('#optW').classList.toggle('on', _kw); $('#optW').classList.toggle('kw', _kw); }
+function getEs(){ const t=$('#esField').value.trim(); return t===''?null:parseInt(t,10); }
+function setEs(n){ $('#esField').value = (n===null||n===undefined)?'':n; }
+
+function persist(){
+  const d = DATA[idx];
+  decisions[key(d)] = {
+    human_is_correct:_ic, human_error_step:getEs(), human_key_wrong:_kw,
+    human_notes:$('#notes').value, reviewed:true, ts:new Date().toISOString()
+  };
+  localStorage.setItem(STOREKEY, JSON.stringify(decisions));
+  $('#revFlag').classList.remove('hidden');
+  updateProgress();
+}
+
+function updateProgress(){
+  const done = DATA.filter(d=>decisions[key(d)]&&decisions[key(d)].reviewed).length;
+  $('#prog').innerHTML = `<b>${done}</b> / ${DATA.length} reviewed · #${idx+1}`;
+}
+
+function go(n){ idx = Math.max(0, Math.min(DATA.length-1, n)); render(); }
+function nextUnreviewed(){
+  for(let k=1;k<=DATA.length;k++){ const j=(idx+k)%DATA.length;
+    if(!(decisions[key(DATA[j])]||{}).reviewed){ go(j); return; } }
+  alert('All reviewed in this view.');
+}
+
+function applyFilter(){
+  const t = $('#tierFilter').value;
+  DATA = ALL.filter(d=> !t || d.tier===t);
+  idx = 0;
+  if(DATA.length) render(); else { $('#wrap').innerHTML='<div class="empty">No traces in this tier.</div>'; $('#deck').classList.add('hidden'); }
+}
+
+let ALL = [];
+function load(text){
+  ALL = text.trim().split(/\r?\n/).filter(Boolean).map(JSON.parse);
+  STOREKEY = 'hle_annot_' + ALL.length + '_' + (ALL[0]?ALL[0].question_id:'x');
+  decisions = JSON.parse(localStorage.getItem(STOREKEY) || '{}');
+  const tiers = [...new Set(ALL.map(d=>d.tier).filter(Boolean))];
+  $('#tierFilter').innerHTML = '<option value="">all tiers ('+ALL.length+')</option>' +
+    tiers.map(t=>`<option value="${t}">${t} (${ALL.filter(d=>d.tier===t).length})</option>`).join('');
+  DATA = ALL.slice(); idx = 0; render();
+}
+
+function escapeHtml(s){ return (s==null?'':String(s))
+  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function exportJSONL(){
+  const lines = ALL.map(d=>{
+    const dec = decisions[key(d)] || {};
+    return JSON.stringify({
+      question_id:d.question_id, response_label:d.response_label,
+      reviewed:!!dec.reviewed,
+      human_is_correct:dec.human_is_correct ?? null,
+      human_error_step:dec.human_error_step ?? null,
+      human_key_wrong:dec.human_key_wrong ?? null,
+      human_notes:dec.human_notes ?? '',
+      ai_final_is_correct:d.final_is_correct ?? null,
+      ai_final_error_step:d.final_error_step ?? null,
+      ts:dec.ts ?? null
+    });
+  });
+  const blob = new Blob([lines.join('\n')], {type:'application/x-ndjson'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'human_decisions.jsonl'; a.click();
+}
+
+// ---- events ----
+$('#file').onchange = e => { const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader(); r.onload=()=>load(r.result); r.readAsText(f); };
+const drop = $('#drop');
+['dragover','dragenter'].forEach(ev=>document.addEventListener(ev,e=>{e.preventDefault(); drop&&drop.classList.add('over');}));
+['dragleave','drop'].forEach(ev=>document.addEventListener(ev,e=>{e.preventDefault(); drop&&drop.classList.remove('over');}));
+document.addEventListener('drop', e=>{ const f=e.dataTransfer.files[0]; if(f){const r=new FileReader(); r.onload=()=>load(r.result); r.readAsText(f);} });
+
+$('#optC').onclick=()=>setIC(1); $('#optX').onclick=()=>setIC(0);
+$('#optN').onclick=()=>{setEs(null); paintSteps();};
+$('#optW').onclick=()=>setKW(!_kw);
+$('#save').onclick=()=>{ persist(); if(idx<DATA.length-1) go(idx+1); };
+$('#prev').onclick=()=>go(idx-1); $('#next').onclick=()=>go(idx+1);
+$('#jumpUn').onclick=nextUnreviewed; $('#export').onclick=exportJSONL;
+$('#tierFilter').onchange=applyFilter;
+$('#esField').oninput=paintSteps;
+
+document.addEventListener('keydown', e=>{
+  if(['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)) {
+    if(e.key==='Enter' && e.target.id==='notes' && !e.shiftKey){ e.preventDefault(); persist(); if(idx<DATA.length-1) go(idx+1); }
+    return;
+  }
+  if(!DATA.length) return;
+  switch(e.key.toLowerCase()){
+    case 'c': setIC(1); break;
+    case 'x': setIC(0); break;
+    case 'n': setEs(null); paintSteps(); break;
+    case 'w': setKW(!_kw); break;
+    case 'u': nextUnreviewed(); break;
+    case '[': go(idx-1); break;
+    case ']': go(idx+1); break;
+    case 'enter': persist(); if(idx<DATA.length-1) go(idx+1); break;
+  }
+});
+</script>
+</body>
+</html>
