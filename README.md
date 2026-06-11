@@ -69,6 +69,7 @@ Blind detection (C0) is near chance for the five sub-frontier monitors (0.52–0
 Recall on true-error traces by condition, fixed 90/31 denominators:
 
 | monitor | wrong-answer: C0 / C1 / C1u / C2 | flawed-cell: C0 / C1 / C1u / C2 |
+|---|---|---|
 | qwen3-32b | .633 / .900 / .667 / .778 | .742 / .516 / .677 / .839 |
 | llama-3.3-70b | .644 / .889 / .889 / .344 | .548 / .323 / .677 / .323 |
 | qwen-2.5-72b | .378 / .867 / .611 / .400 | .226 / .161 / .194 / .419 |
