@@ -96,7 +96,7 @@ The ground truth is AI-constructed and human verification is incomplete, so ever
 ## Repository contents
 
 - `oversight_pipeline.ipynb` - target loading, the C0/C1/C1u/C2 runners (threaded httpx, append-only JSONL with resume/retry), scoring, and the anchoring decomposition.
-- `annotator` - the HTML annotation tool used by the volunteer physicist annotators (included for reference).
+- `hle_annotator_v3.html` - the HTML annotation tool used by the volunteer physicist annotators (included for reference).
 - `figures/` - all figures, including the dose-response (fig6).
 - `summaries/` - per-condition metric CSVs (c0/c1/c1u/c2_summary.csv).
 
