@@ -1,0 +1,28 @@
+{
+  "snapshot": "pre-kimi-k3",
+  "created": "2026-08-14",
+  "study_state": {
+    "gold_ready_traces": 237,
+    "gold_errors": 108,
+    "critical_traces": 25,
+    "existing_monitors": 7,
+    "kimi_run": false
+  },
+  "conditions": {
+    "C0": "BLIND",
+    "C1u": "HINT",
+    "C1": "CERT",
+    "C3": "REVISE",
+    "C3n": "RCTRL",
+    "C2": "STEP"
+  },
+  "files": {
+    "hle_physics_pipeline_9.ipynb": "48c955121150957ce98ad54ee77154eb2212b9a62bba9357b6e0d216b743d87a",
+    "hle_physics_pipeline_9_github.ipynb": "0f36673bef325d6a542b87ce5d63a3fb3c1e35b60aadf60e2fa9f2c8b4f0c0ed",
+    "fig1_ladder.png": "8cb5e3fd31c2b2ba0fe5c2699de03f6d4c20b8e4105e63192a70b9cc06930f22",
+    "fig2_interaction.png": "41c5739bac953946cd65a8684e6d4f1c14b20dba7aa367dcf374ce40c4f4d70e",
+    "fig3_localization.png": "3448de207d6ac17f715c6be9e4ec1249fe29443d0c0e973c028990ae193876d9",
+    "fig4_revision(2).png": "c229d5b830c8e3757fcd8910e6c815c980b1cc8f93c9e3fd07f34c7af03a8883"
+  },
+  "note": "The public notebook embeds the frozen aggregate summaries and figures. Raw monitor JSONL files were not supplied with this cleanup request and therefore are not included in this manifest."
+}
