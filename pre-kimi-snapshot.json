@@ -17,6 +17,7 @@
     "C2": "STEP"
   },
   "files": {
+    "ground_truth_gold.jsonl": "1434d0cb045b6bbc07f863841cd4392f34189638fe0a6f1fb084af4d0bc24067",
     "hle_physics_pipeline_9.ipynb": "48c955121150957ce98ad54ee77154eb2212b9a62bba9357b6e0d216b743d87a",
     "hle_physics_pipeline_9_github.ipynb": "0f36673bef325d6a542b87ce5d63a3fb3c1e35b60aadf60e2fa9f2c8b4f0c0ed",
     "fig1_ladder.png": "8cb5e3fd31c2b2ba0fe5c2699de03f6d4c20b8e4105e63192a70b9cc06930f22",
