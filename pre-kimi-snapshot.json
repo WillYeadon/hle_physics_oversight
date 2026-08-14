@@ -22,7 +22,7 @@
     "fig1_ladder.png": "8cb5e3fd31c2b2ba0fe5c2699de03f6d4c20b8e4105e63192a70b9cc06930f22",
     "fig2_interaction.png": "41c5739bac953946cd65a8684e6d4f1c14b20dba7aa367dcf374ce40c4f4d70e",
     "fig3_localization.png": "3448de207d6ac17f715c6be9e4ec1249fe29443d0c0e973c028990ae193876d9",
-    "fig4_revision(2).png": "c229d5b830c8e3757fcd8910e6c815c980b1cc8f93c9e3fd07f34c7af03a8883"
+    "fig4_revision.png": "c229d5b830c8e3757fcd8910e6c815c980b1cc8f93c9e3fd07f34c7af03a8883"
   },
   "note": "The public notebook embeds the frozen aggregate summaries and figures. Raw monitor JSONL files were not supplied with this cleanup request and therefore are not included in this manifest."
 }
