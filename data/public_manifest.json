@@ -1,0 +1,266 @@
+{
+  "format": "hle-physics-oversight-text-free-v1",
+  "files": {
+    "ground_truth_gold.jsonl": {
+      "rows": 252,
+      "sha256": "3a2d3cacac33aa1e7f2d72f682c447cd24528c956bd5e47b86c31c60a45474e7",
+      "bytes": 97691
+    },
+    "monitor_c0__claude-fable-5.jsonl": {
+      "rows": 255,
+      "sha256": "d50e49ef02391ba10a273a1b9948a7d4c69efb58e2c03d17bc27263c0ca7bbfa",
+      "bytes": 57892
+    },
+    "monitor_c0__deepseek_deepseek-chat-v4flash.jsonl": {
+      "rows": 305,
+      "sha256": "08691f8cb621320b4073fa129f4d8ea458cf17a58385b765958abc3ab7691c77",
+      "bytes": 76423
+    },
+    "monitor_c0__google_gemini-3.1-pro-preview.jsonl": {
+      "rows": 276,
+      "sha256": "fd3705aee68475780c77e9f5e323013f4424c4ec6203fba3470b8407de1c1859",
+      "bytes": 72979
+    },
+    "monitor_c0__meta-llama_llama-3.3-70b-instruct.jsonl": {
+      "rows": 265,
+      "sha256": "7eacddbcf0dc342f261d10ce60f4447c3a26de517955df1d7ad58a91bdb5f419",
+      "bytes": 74553
+    },
+    "monitor_c0__moonshotai_kimi-k3.jsonl": {
+      "rows": 237,
+      "sha256": "5bc9ed4f2ed94c16c7b505a23e05f479197313ba21673a867f077827922da8af",
+      "bytes": 57139
+    },
+    "monitor_c0__qwen_qwen-2.5-72b-instruct.jsonl": {
+      "rows": 265,
+      "sha256": "1508dd0c2fe673843bca68ec725e78d605d48ed414ce96fc6260d0042db3b2ed",
+      "bytes": 70870
+    },
+    "monitor_c0__qwen_qwen3-32b.jsonl": {
+      "rows": 305,
+      "sha256": "186aaca87c4a7223f8574174020e91f5437f53928219a7fd40daeab695e68e43",
+      "bytes": 71812
+    },
+    "monitor_c0__x-ai_grok-4.3.jsonl": {
+      "rows": 265,
+      "sha256": "2e6a998e11bdaa331716474014e6de2d2e0c387e693e1c6021bc17db9117729f",
+      "bytes": 62758
+    },
+    "monitor_c1__claude-fable-5.jsonl": {
+      "rows": 255,
+      "sha256": "780c387ef2bf1a8f6783a66030878f44418243fdfa73a974f47166b7af20fe89",
+      "bytes": 57908
+    },
+    "monitor_c1__deepseek_deepseek-chat-v4flash.jsonl": {
+      "rows": 237,
+      "sha256": "3db1d75e65ac6286a80cd92c3c9fba3e78b933bfc3d030b5bb2131628fa9af30",
+      "bytes": 61106
+    },
+    "monitor_c1__google_gemini-3.1-pro-preview.jsonl": {
+      "rows": 237,
+      "sha256": "90ee3761dc5a6104acbe93964b81e901b666adb2214ada7729836e9df6f66505",
+      "bytes": 63193
+    },
+    "monitor_c1__meta-llama_llama-3.3-70b-instruct.jsonl": {
+      "rows": 237,
+      "sha256": "7e8af752014a3bdd5562c76ea43d9dcecec5936afa04a7e2fddd72471e5fd9c5",
+      "bytes": 66697
+    },
+    "monitor_c1__moonshotai_kimi-k3.jsonl": {
+      "rows": 237,
+      "sha256": "384fdf4264a2ac38002dbc6e700fff48b03d40da68e817a7c59ca8a143848861",
+      "bytes": 57001
+    },
+    "monitor_c1__qwen_qwen-2.5-72b-instruct.jsonl": {
+      "rows": 237,
+      "sha256": "57a4dffa70bb6658e28cfb5f9f4aa8fe963443bedac313c1ee40bf6c3397ee89",
+      "bytes": 63379
+    },
+    "monitor_c1__qwen_qwen3-32b.jsonl": {
+      "rows": 237,
+      "sha256": "92765e3231a00afaa280affde0ccac02c21b542231920f3011e4aafedd0e53bb",
+      "bytes": 57530
+    },
+    "monitor_c1__x-ai_grok-4.3.jsonl": {
+      "rows": 237,
+      "sha256": "8361799ccf052866be8e68ce30897ad85f7881d69f0710329bb8dc920857b100",
+      "bytes": 56043
+    },
+    "monitor_c1u__claude-fable-5.jsonl": {
+      "rows": 257,
+      "sha256": "b0a230c0d2449090a59c7cda01e8f843570a06965266315d7c432a3a213bad96",
+      "bytes": 58384
+    },
+    "monitor_c1u__deepseek_deepseek-chat-v4flash.jsonl": {
+      "rows": 237,
+      "sha256": "3b2a9b09341757f5972d2608e41c708a2ae9be5d25571b0ce61fee4aa4257e15",
+      "bytes": 61410
+    },
+    "monitor_c1u__google_gemini-3.1-pro-preview.jsonl": {
+      "rows": 237,
+      "sha256": "aeabf74b45b7eb35d9b47c7f5794f5406812add3b88645c8d5a0978692ce53d7",
+      "bytes": 63389
+    },
+    "monitor_c1u__meta-llama_llama-3.3-70b-instruct.jsonl": {
+      "rows": 237,
+      "sha256": "6f0b7d6389716a2dcbe3b77cf6ef85f2ca79c7e51570c60a722f7c4226f79eca",
+      "bytes": 66880
+    },
+    "monitor_c1u__moonshotai_kimi-k3.jsonl": {
+      "rows": 239,
+      "sha256": "3fe401885dc24865cc6bc3791025cce564b43b59eb11539556cdd5bb0fa9f2c2",
+      "bytes": 57723
+    },
+    "monitor_c1u__qwen_qwen-2.5-72b-instruct.jsonl": {
+      "rows": 237,
+      "sha256": "1f358e5849954f6f86b92e03c01ffed980f846f16ddf13fb04567df2f0f48b84",
+      "bytes": 63627
+    },
+    "monitor_c1u__qwen_qwen3-32b.jsonl": {
+      "rows": 237,
+      "sha256": "c0f8a558b61a5e35a4a9c8f8bd26c0a2243da3a4b8074cb039b79f32d3b5ddd2",
+      "bytes": 57842
+    },
+    "monitor_c1u__x-ai_grok-4.3.jsonl": {
+      "rows": 237,
+      "sha256": "7231a0b6d5458f7c4c69a4b87b1927d99292687a09ee7f7055cdb67d8293944a",
+      "bytes": 56345
+    },
+    "monitor_c2__claude-fable-5.jsonl": {
+      "rows": 255,
+      "sha256": "60c0870b4d6b9ae1491504e621a466130f009b2aee75e58cf5bad6cf2b4a512b",
+      "bytes": 62215
+    },
+    "monitor_c2__deepseek_deepseek-chat-v4flash.jsonl": {
+      "rows": 274,
+      "sha256": "76234bfedee42b39166256f3a01b497a79ec2477f0e113b20997d7d4fd283ba4",
+      "bytes": 70746
+    },
+    "monitor_c2__google_gemini-3.1-pro-preview.jsonl": {
+      "rows": 324,
+      "sha256": "efa034138446d2c6a287994592c99a1b06d8a9c87c9a884a347038a0c9b703ed",
+      "bytes": 86852
+    },
+    "monitor_c2__meta-llama_llama-3.3-70b-instruct.jsonl": {
+      "rows": 281,
+      "sha256": "d2cb96dc3c08d7209ec070291b4ac9cb8a118209d6d8d13d23d7a9a53dc535bc",
+      "bytes": 79188
+    },
+    "monitor_c2__moonshotai_kimi-k3.jsonl": {
+      "rows": 237,
+      "sha256": "65a14fc9f25a2da30f0b32ca3e1596032f9ed7bb3948a3835198fe74ca4ef6b5",
+      "bytes": 57205
+    },
+    "monitor_c2__qwen_qwen-2.5-72b-instruct.jsonl": {
+      "rows": 270,
+      "sha256": "8c7a816945d811a1cdfe086e5e007dd8b70ea3f3cccdfe80ed2663cd394ca8e8",
+      "bytes": 72667
+    },
+    "monitor_c2__qwen_qwen3-32b.jsonl": {
+      "rows": 348,
+      "sha256": "667b271c4b686728098d9dade384b2ac022342e761ec2ef1273945e8147aee37",
+      "bytes": 84639
+    },
+    "monitor_c2__x-ai_grok-4.3.jsonl": {
+      "rows": 265,
+      "sha256": "804c15d537d95d20cc45850149034c78dc7df5c8196ad1dc121adae6e719cf5a",
+      "bytes": 62714
+    },
+    "monitor_c3__claude-fable-5.jsonl": {
+      "rows": 234,
+      "sha256": "3ac7f8e1eab34f59515028918629bc04634b89a7dd75cd4ab786eee89654e8cd",
+      "bytes": 64678
+    },
+    "monitor_c3__deepseek_deepseek-chat-v4flash.jsonl": {
+      "rows": 237,
+      "sha256": "ef4ed4602407c2436b5cec57d37559ee3ff3d1efd1ce9b9fb1d04b7ab21ca5e2",
+      "bytes": 72113
+    },
+    "monitor_c3__google_gemini-3.1-pro-preview.jsonl": {
+      "rows": 237,
+      "sha256": "9f16764eb7e2ea140d0e3806e25d4df804870a98e93e0ae7f510a932df737668",
+      "bytes": 74762
+    },
+    "monitor_c3__meta-llama_llama-3.3-70b-instruct.jsonl": {
+      "rows": 241,
+      "sha256": "cab48aa31d7ea72682501bb6c5473995da8c190d5183c99c6f1b2f9904ac93f1",
+      "bytes": 79293
+    },
+    "monitor_c3__moonshotai_kimi-k3.jsonl": {
+      "rows": 237,
+      "sha256": "01390d5f541db7d605753a16d65ce7ac4de8d6eb60259e2f91da65c7a29c4f57",
+      "bytes": 68708
+    },
+    "monitor_c3__qwen_qwen-2.5-72b-instruct.jsonl": {
+      "rows": 627,
+      "sha256": "79051f2423fbaf79d6d863d1cf13bd1b6640eff5940bf62285eb61696a3b36b8",
+      "bytes": 175899
+    },
+    "monitor_c3__qwen_qwen3-32b.jsonl": {
+      "rows": 287,
+      "sha256": "be9d5485f2757a4c5e8b45510cb23a55eb25430b566985cf4c0ce931767b7ed5",
+      "bytes": 80360
+    },
+    "monitor_c3__x-ai_grok-4.3.jsonl": {
+      "rows": 237,
+      "sha256": "bc74627e9eaf621f9030d18cfadc9567fdd121551f886d91c480bcbdf49263a2",
+      "bytes": 67682
+    },
+    "monitor_c3n__claude-fable-5.jsonl": {
+      "rows": 153,
+      "sha256": "d45524862f37f637f5c870f0ccd5b334bdc3ad158abf0e51103006e0acb237ac",
+      "bytes": 42619
+    },
+    "monitor_c3n__deepseek_deepseek-chat-v4flash.jsonl": {
+      "rows": 154,
+      "sha256": "4c48247436a15a88d37b644188f3ecf553123efb60011530d98d31f8d200ab3e",
+      "bytes": 47205
+    },
+    "monitor_c3n__google_gemini-3.1-pro-preview.jsonl": {
+      "rows": 154,
+      "sha256": "68f92b4f67ebfec16cf93640769b9b893e11cae2c6ae74140593b6dca4653c08",
+      "bytes": 48813
+    },
+    "monitor_c3n__meta-llama_llama-3.3-70b-instruct.jsonl": {
+      "rows": 156,
+      "sha256": "e769a0555bbd88815a30adbbad87529fc2f06abd444add21634a25c556ada53b",
+      "bytes": 51558
+    },
+    "monitor_c3n__moonshotai_kimi-k3.jsonl": {
+      "rows": 154,
+      "sha256": "851148a8ccb98dd3b70b53f32e0d10946e9456b53da2ee8dac36b53ae7791b95",
+      "bytes": 44958
+    },
+    "monitor_c3n__qwen_qwen-2.5-72b-instruct.jsonl": {
+      "rows": 362,
+      "sha256": "de457a869da387e68dc697e2376ed245f942bf8163e4288831994768c70fe914",
+      "bytes": 103048
+    },
+    "monitor_c3n__qwen_qwen3-32b.jsonl": {
+      "rows": 162,
+      "sha256": "f7b3394fae6b546f58a6e30ef9d396fb84d9f2f932417afd69b16e136eba759a",
+      "bytes": 46858
+    },
+    "monitor_c3n__x-ai_grok-4.3.jsonl": {
+      "rows": 154,
+      "sha256": "f97be58ef1194fcb731f3478f92e008254589276316ccd44a66d8ec1ba920722",
+      "bytes": 44268
+    }
+  },
+  "excluded_content": [
+    "analysis",
+    "answer",
+    "content",
+    "correct_answer",
+    "image",
+    "model_response",
+    "monitor_rationale",
+    "prompt",
+    "question",
+    "rationale",
+    "raw",
+    "raw_output",
+    "reference_answer",
+    "reference_rationale"
+  ]
+}
